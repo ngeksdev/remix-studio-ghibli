@@ -21,10 +21,24 @@ export default function MovieId() {
   return (
     <div className="w-[80rem]">
       <MovieBanner movie={movieDetails} />
-
-      <p className="py-3 px-3">{movieDetails.description}</p>
-      <CharacterList characters={movieDetails.characters} />
-      <Outlet />
+      <div className="p-10">
+        <p>{movieDetails.description}</p>
+        <div className="flex py-5 space-x-5">
+          <CharacterList characters={movieDetails.characters} />
+          <div className="flex-1 flex flex-col justify-between">
+            <Outlet />
+          </div>
+        </div>
+      </div>
     </div>
+    // <div className="w-[80rem]">
+    //   <MovieBanner movie={movieDetails} />
+
+    //   <p className="py-3 px-3">{movieDetails.description}</p>
+    //   <CharacterList characters={movieDetails.characters} />
+    //   <div className="flex-1 flex flex-col justify-between">
+    //     <Outlet />
+    //   </div>
+    // </div>
   );
 }
