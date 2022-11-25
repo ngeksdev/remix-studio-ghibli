@@ -1,3 +1,6 @@
+import { json } from '@remix-run/node';
+import { CommentEntry, getMovieComments } from './comments';
+
 export interface Movie {
   id: string;
   title: string;
@@ -7,6 +10,7 @@ export interface Movie {
   description: string;
   people: string[];
   characters: Character[];
+  comments?: CommentEntry[];
 }
 
 export interface Character {
@@ -19,8 +23,8 @@ export interface Character {
 }
 
 export const getMovies = async (movieTitle?: string) => {
-  const resp = fetch('https://ghibliapi.herokuapp.com/films');
-  const movieList: Movie[] = await (await resp).json();
+  const resp = await fetch('https://ghibliapi.herokuapp.com/films');
+  const movieList: Movie[] = await resp.json();
 
   if (movieTitle) {
     return movieList.filter((movie) =>
@@ -32,27 +36,38 @@ export const getMovies = async (movieTitle?: string) => {
 };
 
 export const getMovieById = async (movieId: string) => {
-  const resp = fetch(`https://ghibliapi.herokuapp.com/films/${movieId}`);
-  const movieDetails: Movie = await (await resp).json();
+  const resp = await fetch(`https://ghibliapi.herokuapp.com/films/${movieId}`);
+  const movieDetails: Movie = await resp.json();
+  const comments: CommentEntry[] = await getMovieComments(movieId);
 
   const characrterResp = Promise.all(
     movieDetails.people
       .filter((url) => url !== 'https://ghibliapi.herokuapp.com/people/')
       .map(async (url) => {
-        const resp = fetch(url);
-        const character: Character = await (await resp).json();
+        const resp = await fetch(url);
+        const character: Character = await resp.json();
         return character;
       })
   );
 
   const characters = await characrterResp;
 
-  return { ...movieDetails, characters };
+  return { ...movieDetails, characters, comments };
 };
 
 export const getCharacterById = async (characterId: string) => {
-  const resp = fetch(`https://ghibliapi.herokuapp.com/people/${characterId}`);
-  const character: Character = await (await resp).json();
+  const resp = await fetch(
+    `https://ghibliapi.herokuapp.com/people/${characterId}`
+  );
+
+  const character: Character = await resp.json();
+
+  if (!resp.ok) {
+    throw json('Uh oh... something went wrong!', {
+      status: 404,
+      statusText: 'Request not found.'
+    });
+  }
 
   return character;
 };

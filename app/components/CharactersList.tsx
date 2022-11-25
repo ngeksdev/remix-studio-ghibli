@@ -11,6 +11,7 @@ export default function CharacterList({ characters }: CharactersListProps) {
     <div className="flex-1 max-w-md p-3">
       <h3 className="font-bold text-2xl">Characters</h3>
       <ul className="flex flex-col space-y-3 my-3">
+        {characters?.length === 0 && <p>No characters in record.</p>}
         {characters?.map((character) => (
           <li key={character.id}>
             <NavLink

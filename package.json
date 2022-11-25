@@ -2,11 +2,12 @@
   "private": true,
   "sideEffects": false,
   "scripts": {
-    "build": "npm run build:css && remix build",
+    "build": "npm:build:css && remix build",
     "build:css": "postcss styles/**/*.css --base styles --dir app/styles",
-    "dev": "concurrently \"npm run dev:css\" \"remix dev\"",
-    "dev:css": "npm run build:css -- --w",
-    "start": "remix-serve build"
+    "dev": "concurrently \"npm:dev:css\" \"remix dev\" \"npm:json-server\"",
+    "dev:css": "npm:build:css -- --w",
+    "start": "remix-serve build",
+    "json-server": "json-server --watch db.json --port 3001"
   },
   "dependencies": {
     "@remix-run/node": "^1.7.6",
@@ -25,6 +26,7 @@
     "concurrently": "^7.6.0",
     "cssnano": "^5.1.14",
     "eslint": "^8.27.0",
+    "json-server": "^0.17.1",
     "postcss": "^8.4.19",
     "postcss-cli": "^10.0.0",
     "tailwindcss": "^3.2.4",
