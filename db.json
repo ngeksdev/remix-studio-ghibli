@@ -11,12 +11,6 @@
       "name": "Max",
       "message": "Lorem ipsum dolor sit amet.",
       "movieId": "2baf70d1-42bb-4437-b551-e5fed5a87abe"
-    },
-    {
-      "name": "test3",
-      "message": "test34",
-      "movieId": "2baf70d1-42bb-4437-b551-e5fed5a87abe",
-      "id": 3
     }
   ]
 }
