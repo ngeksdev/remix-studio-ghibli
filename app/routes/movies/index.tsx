@@ -3,9 +3,12 @@ import { useLoaderData, Link, Form } from '@remix-run/react';
 
 import { type Movie, getMovies } from '~/api/studio-ghibli';
 
+import invariant from 'tiny-invariant';
+
 export const loader: LoaderFunction = ({ request }) => {
   const url = new URL(request.url);
   const titleParam = url.searchParams.get('title');
+  invariant(titleParam, 'Expected title parameter');
 
   return getMovies(titleParam);
 };
