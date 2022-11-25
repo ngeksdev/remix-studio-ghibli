@@ -14,7 +14,11 @@ export default function MovieBanner({ movie: m }: MovieAsProps) {
         alt={m.title}
       />
       <div className="font-bold text-white h-96 absolute top-0 left-0 flex flex-col justify-between">
-        <Link to="/" className="text-xl underline  py-3 px-3">
+        <Link
+          to="/movies"
+          prefetch="intent"
+          className="text-xl underline py-3 px-3"
+        >
           Back
         </Link>
         <h2 className="text-2xl bg-gray-800 opacity-70 px-3 py-3 text-white">
