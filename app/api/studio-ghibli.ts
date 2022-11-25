@@ -20,3 +20,10 @@ export const getMovies = async (movieTitle?: string): Promise<Movie[]> => {
 
   return filteredMovieList;
 };
+
+export const getMovieById = async (movieId: string): Promise<Movie> => {
+  const resp = fetch(`https://ghibliapi.herokuapp.com/films/${movieId}`);
+  const movieDetails: Movie = await (await resp).json();
+
+  return movieDetails;
+};
