@@ -1,5 +1,5 @@
 import { json } from '@remix-run/node';
-import { CommentEntry, getMovieComments } from './comments';
+import { type CommentEntry, getMovieComments } from './comments';
 
 export interface Movie {
   id: string;

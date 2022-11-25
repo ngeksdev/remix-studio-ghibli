@@ -1,3 +1,5 @@
+import { db } from '~/utils/db.server';
+
 export interface CommentEntry {
   name: string;
   message: string;
@@ -5,22 +7,9 @@ export interface CommentEntry {
 }
 
 export const getMovieComments = async (movieId: string) => {
-  const resp = await fetch(`http://localhost:3001/comments?movieId=${movieId}`);
-  const movieComments: CommentEntry[] = await resp.json();
-
-  return movieComments;
+  return await db.comment.findMany({ where: { movieId } });
 };
 
 export const addComment = async (comment: CommentEntry) => {
-  const resp = await fetch('http://localhost:3001/comments', {
-    method: 'POST',
-    body: JSON.stringify(comment),
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  });
-
-  const newComment: CommentEntry = await resp.json();
-
-  return newComment;
+  return await db.comment.create({ data: comment });
 };

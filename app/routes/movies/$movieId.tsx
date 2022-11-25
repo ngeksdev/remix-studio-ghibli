@@ -25,7 +25,7 @@ export const action: ActionFunction = async ({ request, params }) => {
   invariant(params.movieId, 'Expected params.movieId');
   const body = await request.formData();
 
-  const comment = {
+  const comment: CommentEntry = {
     name: body.get('name') as string,
     message: body.get('message') as string,
     movieId: params.movieId
