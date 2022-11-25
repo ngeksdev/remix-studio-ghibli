@@ -7,7 +7,7 @@
     "dev": "concurrently \"npm run dev:css\" \"remix dev\" \"npm run json-server\"",
     "dev:css": "npm run build:css -- --w",
     "start": "remix-serve build",
-    "json-server": "json-server --watch db.json --port 3001"
+    "json-server": "node server.js"
   },
   "dependencies": {
     "@remix-run/node": "^1.7.6",
