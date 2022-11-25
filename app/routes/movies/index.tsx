@@ -3,12 +3,9 @@ import { useLoaderData, Link, Form } from '@remix-run/react';
 
 import { type Movie, getMovies } from '~/api/studio-ghibli';
 
-import invariant from 'tiny-invariant';
-
 export const loader: LoaderFunction = ({ request }) => {
   const url = new URL(request.url);
-  const titleParam = url.searchParams.get('title');
-  invariant(titleParam, 'Expected title parameter');
+  const titleParam = url.searchParams.get('title')!;
 
   return getMovies(titleParam);
 };
@@ -39,7 +36,7 @@ export default function MoviesIndex() {
       {movieData.length === 0 ? (
         <div className="min-w-[80rem]">
           <h2>No results found.</h2>
-          <Link to="/" className="hover:underline">
+          <Link to="/movies" className="hover:underline">
             Back to Home
           </Link>
         </div>
