@@ -2,10 +2,10 @@
   "private": true,
   "sideEffects": false,
   "scripts": {
-    "build": "npm:build:css && remix build",
+    "build": "npm run build:css && remix build",
     "build:css": "postcss styles/**/*.css --base styles --dir app/styles",
-    "dev": "concurrently \"npm:dev:css\" \"remix dev\" \"npm:json-server\"",
-    "dev:css": "npm:build:css -- --w",
+    "dev": "concurrently \"npm run dev:css\" \"remix dev\" \"npm run json-server\"",
+    "dev:css": "npm run build:css -- --w",
     "start": "remix-serve build",
     "json-server": "json-server --watch db.json --port 3001"
   },
