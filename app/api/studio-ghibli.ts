@@ -1,3 +1,5 @@
+import { resolvePath } from 'react-router';
+
 export interface Movie {
   id: string;
   title: string;
@@ -5,25 +7,35 @@ export interface Movie {
   image: string;
   movie_banner: string;
   description: string;
-  characters: string[];
+  people: string[];
+  characters: Character[];
 }
 
-export const getMovies = async (movieTitle?: string): Promise<Movie[]> => {
-  const resp = fetch('https://ghibliapi.herokuapp.com/films');
-  const movieList: Movie[] = await (await resp).json();
+export interface Character {
+  id: string;
+  name: string;
+  gender?: string;
+  age?: string;
+  eye_color?: string;
+  hair_color?: string;
+}
+
+export const getMovies = async (movieTitle?: string) => {
+  const moviePromise: Promise<Movie[]> = fetch(
+    'https://ghibliapi.herokuapp.com/films'
+  )
+    .then((resp) => resp.json())
+    .then((movies: Movie[]) => {
+      return movies;
+    });
+
+  const movieList = await moviePromise;
 
   const filteredMovieList = movieTitle
-    ? movieList.filter((m) =>
-        m.title.toLowerCase().includes(movieTitle.toLowerCase())
+    ? movieList.filter((movie) =>
+        movie.title.toLowerCase().includes(movieTitle.toLowerCase())
       )
     : movieList;
 
   return filteredMovieList;
-};
-
-export const getMovieById = async (movieId: string): Promise<Movie> => {
-  const resp = fetch(`https://ghibliapi.herokuapp.com/films/${movieId}`);
-  const movieDetails: Movie = await (await resp).json();
-
-  return movieDetails;
 };
