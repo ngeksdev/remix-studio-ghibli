@@ -21,17 +21,10 @@ export interface Character {
 }
 
 export const getMovies = async (movieTitle?: string) => {
-  const moviePromise: Promise<Movie[]> = fetch(
-    'https://ghibliapi.herokuapp.com/films'
-  )
-    .then((resp) => resp.json())
-    .then((movies: Movie[]) => {
-      return movies;
-    });
+  const resp = fetch('https://ghibliapi.herokuapp.com/films');
+  const movieList: Movie[] = await (await resp).json();
 
-  const movieList = await moviePromise;
-
-  const filteredMovieList = movieTitle
+  const filteredMovieList: Movie[] = movieTitle
     ? movieList.filter((movie) =>
         movie.title.toLowerCase().includes(movieTitle.toLowerCase())
       )
@@ -41,29 +34,27 @@ export const getMovies = async (movieTitle?: string) => {
 };
 
 export const getMovieById = async (movieId: string) => {
-  const moviePromise: Promise<Movie> = fetch(
-    `https://ghibliapi.herokuapp.com/films/${movieId}`
-  )
-    .then((resp) => resp.json())
-    .then((movie: Movie) => {
-      return movie;
-    });
+  const resp = fetch(`https://ghibliapi.herokuapp.com/films/${movieId}`);
+  const movieDetails: Movie = await (await resp).json();
 
-  const movieDetails = await moviePromise;
-
-  const charactersPromise: Promise<Character[]> = Promise.all(
+  const characrterResp = Promise.all(
     movieDetails.people
       .filter((url) => url !== 'https://ghibliapi.herokuapp.com/people/')
-      .map((url) =>
-        fetch(url)
-          .then((resp) => resp.json())
-          .then((character: Character) => {
-            return character;
-          })
-      )
+      .map(async (url) => {
+        const resp = fetch(url);
+        const character: Character = await (await resp).json();
+        return character;
+      })
   );
 
-  const characters = await charactersPromise;
+  const characters = await characrterResp;
 
   return { ...movieDetails, characters };
+};
+
+export const getCharacterById = async (characterId: string) => {
+  const resp = fetch(`https://ghibliapi.herokuapp.com/people/${characterId}`);
+  const character: Character = await (await resp).json();
+
+  return character;
 };
