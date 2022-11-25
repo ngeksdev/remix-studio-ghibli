@@ -1,17 +1,19 @@
-import type { LoaderFunction } from '@remix-run/node';
+import type { LoaderFunction, LoaderArgs } from '@remix-run/node';
 import { useLoaderData, Link, Form } from '@remix-run/react';
 
-import { type Movie, getMovies } from '~/api/studio-ghibli';
+import { getMovies } from '~/api/studio-ghibli';
 
-export const loader: LoaderFunction = ({ request }) => {
+export const loader: LoaderFunction = ({ request }: LoaderArgs) => {
   const url = new URL(request.url);
   const titleParam = url.searchParams.get('title')!;
 
   return getMovies(titleParam);
 };
 
+type LoaderData = Awaited<ReturnType<typeof getMovies>>;
+
 export default function MoviesIndex() {
-  const movieData = useLoaderData<Movie[]>();
+  const movieData = useLoaderData<LoaderData>();
 
   return (
     <div className="p-10">

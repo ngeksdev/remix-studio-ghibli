@@ -1,5 +1,3 @@
-import { resolvePath } from 'react-router';
-
 export interface Movie {
   id: string;
   title: string;
@@ -24,13 +22,13 @@ export const getMovies = async (movieTitle?: string) => {
   const resp = fetch('https://ghibliapi.herokuapp.com/films');
   const movieList: Movie[] = await (await resp).json();
 
-  const filteredMovieList: Movie[] = movieTitle
-    ? movieList.filter((movie) =>
-        movie.title.toLowerCase().includes(movieTitle.toLowerCase())
-      )
-    : movieList;
+  if (movieTitle) {
+    return movieList.filter((movie) =>
+      movie.title.toLowerCase().includes(movieTitle.toLowerCase())
+    );
+  }
 
-  return filteredMovieList;
+  return movieList;
 };
 
 export const getMovieById = async (movieId: string) => {

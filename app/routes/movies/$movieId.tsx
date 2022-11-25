@@ -7,10 +7,10 @@ import CharacterList from '~/components/CharactersList';
 
 import invariant from 'tiny-invariant';
 
-export const loader: LoaderFunction = ({ params }: LoaderArgs) => {
+export const loader: LoaderFunction = async ({ params }: LoaderArgs) => {
   invariant(params.movieId, 'Expected as params.movieId');
 
-  return getMovieById(params.movieId);
+  return await getMovieById(params.movieId);
 };
 
 type LoaderData = Awaited<ReturnType<typeof getMovieById>>;
