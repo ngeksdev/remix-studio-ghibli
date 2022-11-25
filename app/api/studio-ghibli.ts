@@ -39,3 +39,31 @@ export const getMovies = async (movieTitle?: string) => {
 
   return filteredMovieList;
 };
+
+export const getMovieById = async (movieId: string) => {
+  const moviePromise: Promise<Movie> = fetch(
+    `https://ghibliapi.herokuapp.com/films/${movieId}`
+  )
+    .then((resp) => resp.json())
+    .then((movie: Movie) => {
+      return movie;
+    });
+
+  const movieDetails = await moviePromise;
+
+  const charactersPromise: Promise<Character[]> = Promise.all(
+    movieDetails.people
+      .filter((url) => url !== 'https://ghibliapi.herokuapp.com/people/')
+      .map((url) =>
+        fetch(url)
+          .then((resp) => resp.json())
+          .then((character: Character) => {
+            return character;
+          })
+      )
+  );
+
+  const characters = await charactersPromise;
+
+  return { ...movieDetails, characters };
+};

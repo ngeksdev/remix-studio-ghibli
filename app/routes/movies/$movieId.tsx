@@ -1,15 +1,16 @@
 import type { LoaderFunction, LoaderArgs } from '@remix-run/node';
-import { useLoaderData, Link } from '@remix-run/react';
+import { useLoaderData } from '@remix-run/react';
 
 import { getMovieById } from '~/api/studio-ghibli';
 import MovieBanner from '~/components/MovieBanner';
+import CharacterList from '~/components/CharactersList';
 
 import invariant from 'tiny-invariant';
 
-export const loader: LoaderFunction = ({ params }: LoaderArgs) => {
+export const loader: LoaderFunction = async ({ params }: LoaderArgs) => {
   invariant(params.movieId, 'Expected as params.movieId');
 
-  return getMovieById(params.movieId);
+  return await getMovieById(params.movieId);
 };
 
 type LoaderData = Awaited<ReturnType<typeof getMovieById>>;
@@ -21,7 +22,8 @@ export default function MovieId() {
     <div className="w-[80rem]">
       <MovieBanner movie={movieDetails} />
 
-      <div className="py-3 px-3">{movieDetails.description}</div>
+      <p className="py-3 px-3">{movieDetails.description}</p>
+      <CharacterList characters={movieDetails.characters} />
     </div>
   );
 }
