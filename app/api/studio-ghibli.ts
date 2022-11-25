@@ -1,5 +1,3 @@
-import { redirect } from '@remix-run/node';
-
 export interface Movie {
   id: string;
   title: string;
@@ -10,7 +8,7 @@ export interface Movie {
   characters: string[];
 }
 
-export const getMovies = async (movieTitle?: string | null) => {
+export const getMovies = async (movieTitle?: string): Promise<Movie[]> => {
   const resp = fetch('https://ghibliapi.herokuapp.com/films');
   const movieList: Movie[] = await (await resp).json();
 

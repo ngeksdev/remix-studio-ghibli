@@ -1,4 +1,4 @@
-import { type LoaderFunction } from '@remix-run/node';
+import type { LoaderFunction } from '@remix-run/node';
 import { useLoaderData, Link, Form } from '@remix-run/react';
 
 import { type Movie, getMovies } from '~/api/studio-ghibli';

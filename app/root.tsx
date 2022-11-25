@@ -40,10 +40,6 @@ export default function App() {
   );
 }
 
-type Children = {
-  children: React.ReactNode;
-};
-
-function Layout({ children }: Children) {
+function Layout({ children }: React.PropsWithChildren<{}>) {
   return <div className="flex flex-col items-center">{children}</div>;
 }
